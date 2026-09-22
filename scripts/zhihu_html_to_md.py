@@ -9,7 +9,12 @@ def to_md(body: str) -> str:
     s = re.sub(r'<h3[^>]*>(.*?)</h3>', r'\n### \1\n', s, flags=re.S)
     s = re.sub(r'<(b|strong)[^>]*>(.*?)</\1>', r'**\2**', s, flags=re.S)
     s = re.sub(r'<(i|em)[^>]*>(.*?)</\1>', r'*\2*', s, flags=re.S)
-    s = re.sub(r'<a[^>]*href="([^"]+)"[^>]*>(.*?)</a>', lambda m: f'[{m.group(2)}]({html.unescape(m.group(1))})', s, flags=re.S)
+    def _a(m):
+        href = html.unescape(m.group(1)); text = re.sub(r'<[^>]+>', '', m.group(2)).strip().strip('\u200b')
+        if re.match(r'^[（(\s]*https?://', text) or href.split('?target=')[-1] in text:
+            return href  # 正文里本来就是裸链接，不套一层
+        return f'[{text}]({href})'
+    s = re.sub(r'<a[^>]*href="([^"]+)"[^>]*>(.*?)</a>', _a, s, flags=re.S)
     s = re.sub(r'<blockquote[^>]*>(.*?)</blockquote>', lambda m: '\n' + '\n'.join('> ' + l for l in re.sub(r'</?p[^>]*>', '\n', m.group(1)).strip().split('\n')) + '\n', s, flags=re.S)
     s = re.sub(r'<li[^>]*>(.*?)</li>', r'- \1\n', s, flags=re.S)
     s = re.sub(r'</?(ul|ol)[^>]*>', '\n', s)
