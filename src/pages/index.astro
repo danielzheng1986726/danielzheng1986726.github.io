@@ -5,7 +5,7 @@ import WorkThumb from '../components/WorkThumb.astro';
 import { getCollection } from 'astro:content';
 const works = (await getCollection('works')).sort((a, b) => a.data.order - b.data.order);
 const writing = (await getCollection('writing', (e) => e.data.onsite)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
-const videos = (await getCollection('videos')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 5);
+const videos = (await getCollection('videos', (v) => !!v.data.cover)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 5);
 const md = (d: Date) => `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 const videoHref = (v) => v.data.bvid ? `https://www.bilibili.com/video/${v.data.bvid}` : (v.data.xhs || '/videos/');
 ---
