@@ -2,6 +2,7 @@ import { getCollection } from 'astro:content';
 export async function GET() {
   const works = (await getCollection('works')).sort((a, b) => a.data.order - b.data.order);
   const writing = (await getCollection('writing', (e) => e.data.onsite)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  const podcast = (await getCollection('podcast')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   const videos = (await getCollection('videos')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   const ymd = (d: Date) => d.toISOString().slice(0, 10);
   const lines: string[] = [];
@@ -22,7 +23,11 @@ export async function GET() {
   lines.push('## 写过的');
   for (const p of writing) lines.push(`- ${ymd(p.data.date)} ${p.data.title} · ${p.data.source}`);
   lines.push('');
-  lines.push('## 拍过的（每天一条口播，讲 HR 怎么用 AI）');
+  lines.push('## 讲过的');
+  lines.push('### 播客《在路上》 https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb69f');
+  for (const e of podcast) lines.push(`- ${ymd(e.data.date)} ${e.data.title} · ${e.data.url}`);
+  lines.push('');
+  lines.push('### 口播（每天一条，讲 HR 怎么用 AI）');
   for (const v of videos) lines.push(`- ${ymd(v.data.date)} ${v.data.title}${v.data.bvid ? ' · https://www.bilibili.com/video/' + v.data.bvid : ''}`);
   lines.push('');
   lines.push('## 联系');

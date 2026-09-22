@@ -40,4 +40,9 @@ const videos = defineCollection({
   }),
 });
 
-export const collections = { works, writing, videos };
+const podcast = defineCollection({
+  loader: file('./src/content/podcast/episodes.json'),
+  schema: z.object({ id: z.string(), date: z.coerce.date(), title: z.string(), minutes: z.number(), url: z.string().url() }),
+});
+
+export const collections = { works, writing, videos, podcast };

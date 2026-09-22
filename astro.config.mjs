@@ -4,4 +4,5 @@ export default defineConfig({
   base: '/',
   output: 'static',
   trailingSlash: 'always',
+  redirects: { '/videos/': '/talks/' },
 });

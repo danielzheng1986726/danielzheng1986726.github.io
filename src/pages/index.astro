@@ -6,6 +6,7 @@ import { getCollection } from 'astro:content';
 const works = (await getCollection('works')).sort((a, b) => a.data.order - b.data.order);
 const writing = (await getCollection('writing', (e) => e.data.onsite)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
 const videos = (await getCollection('videos', (v) => !!v.data.cover)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 5);
+const podcast = (await getCollection('podcast')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
 const md = (d: Date) => `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 const videoHref = (v) => v.data.bvid ? `https://www.bilibili.com/video/${v.data.bvid}` : (v.data.xhs || '/videos/');
 ---
@@ -33,11 +34,20 @@ const videoHref = (v) => v.data.bvid ? `https://www.bilibili.com/video/${v.data.
     {writing.map((p) => <li><span class="date">{md(p.data.date)}</span><a href={`/writing/${p.id}/`}>{p.data.title}</a></li>)}
   </ul>
 
-  <h2>拍过的 <a href="/videos/">全部 →</a></h2>
+  <h2>讲过的 <a href="/talks/">全部 →</a></h2>
   <div class="strip">
     {videos.map((v) => (
       <a href={videoHref(v)}>{v.data.cover ? <img src={v.data.cover} alt={v.data.title} loading="lazy" /> : null}<span>{md(v.data.date)}</span></a>
     ))}
   </div>
   <p class="cap">每天一条口播，讲 HR 怎么用 AI。这是最近五条，点封面看视频，全部在 <a href="https://space.bilibili.com/20930172/lists">B 站的系列</a>。</p>
+  <div class="podcast">
+    <a href="https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb69f"><img src="/shots/podcast-cover.jpg" alt="播客《在路上》封面" loading="lazy" /></a>
+    <div>
+      <h3>播客《在路上》</h3>
+      <p>和嘉宾聊 AI 落到普通人身上是什么样。最近几期：</p>
+      <ul>{podcast.map((e) => <li><a href={e.data.url}>{e.data.title}</a></li>)}</ul>
+      <p class="cap">全部在 <a href="https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb69f">小宇宙</a>。</p>
+    </div>
+  </div>
 </Base>

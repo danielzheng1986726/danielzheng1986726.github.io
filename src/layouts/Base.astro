@@ -4,7 +4,7 @@ interface Props { title?: string; description?: string; image?: string; current?
 const { title, description = '郑晓东，做 HR，在上海。业余自己写 AI 工具。', image = '/shots/xiaolingtong.png', current = '' } = Astro.props;
 const fullTitle = title ? `${title} · 郑晓东` : '郑晓东 Daniel Zheng';
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const nav = [['/', '首页'], ['/works/', '做过的'], ['/writing/', '写过的'], ['/videos/', '拍过的'], ['/about/', '关于我']];
+const nav = [['/', '首页'], ['/works/', '做过的'], ['/writing/', '写过的'], ['/talks/', '讲过的'], ['/about/', '关于我']];
 ---
 <!doctype html>
 <html lang="zh-CN">

@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const videos = (await getCollection('videos')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const podcast = (await getCollection('podcast')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const ymd = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+---
+<Base title="讲过的" current="/talks/">
+  <h1>讲过的</h1>
+  <p class="sub">短的是口播，长的是播客。</p>
+  <h2>播客《在路上》</h2>
+  <div class="podcast">
+    <a href="https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb69f"><img src="/shots/podcast-cover.jpg" alt="播客《在路上》封面" loading="lazy" /></a>
+    <div>
+      <p>和嘉宾聊 AI 落到普通人身上是什么样：有人在公司里推 AI，有人被 AI 改了工作，有人半年后回来再聊一次。全部在 <a href="https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb69f">小宇宙</a>。</p>
+    </div>
+  </div>
+  <ul class="writes">
+    {podcast.map((e) => <li><span class="date">{ymd(e.data.date).slice(2)}</span><a href={e.data.url}>{e.data.title}</a><span class="cap">{e.data.minutes} 分钟</span></li>)}
+  </ul>
+  <h2>口播</h2>
+  <p class="sub">每天一条，讲 HR 怎么用 AI。有 B 站编号的能在这里直接看，其余点过去看。全部在 <a href="https://space.bilibili.com/20930172/lists">B 站的系列</a>。</p>
+  <ul class="videos">
+    {videos.map((v) => (
+      <li>
+        {v.data.cover ? <img src={v.data.cover} alt={v.data.title} loading="lazy" /> : <div></div>}
+        <div>
+          <h3>{v.data.title}</h3>
+          <p>{ymd(v.data.date)}{v.data.xhs ? <> · <a href={v.data.xhs}>小红书</a></> : null}{v.data.douyin ? <> · <a href={v.data.douyin}>抖音</a></> : null}</p>
+          {v.data.bvid ? <div class="player"><iframe src={`https://player.bilibili.com/player.html?bvid=${v.data.bvid}&autoplay=0&danmaku=0`} scrolling="no" allowfullscreen="true" loading="lazy"></iframe></div> : null}
+        </div>
+      </li>
+    ))}
+  </ul>
+</Base>
