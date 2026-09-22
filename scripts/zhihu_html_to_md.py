@@ -10,7 +10,10 @@ def to_md(body: str) -> str:
     s = re.sub(r'<(b|strong)[^>]*>(.*?)</\1>', r'**\2**', s, flags=re.S)
     s = re.sub(r'<(i|em)[^>]*>(.*?)</\1>', r'*\2*', s, flags=re.S)
     def _a(m):
-        href = html.unescape(m.group(1)); text = re.sub(r'<[^>]+>', '', m.group(2)).strip().strip('\u200b')
+        href = html.unescape(m.group(1))
+        href = __import__('urllib.parse').parse.unquote(href)
+        href = re.split(r'[））\s\u4e00-\u9fff]', href)[0]  # 知乎把后面的中文也吞进链接了，截掉
+        text = re.sub(r'<[^>]+>', '', m.group(2)).strip().strip('\u200b')
         if re.match(r'^[（(\s]*https?://', text) or href.split('?target=')[-1] in text:
             return href  # 正文里本来就是裸链接，不套一层
         return f'[{text}]({href})'
