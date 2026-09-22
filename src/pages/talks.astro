@@ -21,15 +21,24 @@ const ymd = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart
   <h2>口播</h2>
   <p class="sub">每天一条，讲 HR 怎么用 AI。有 B 站编号的能在这里直接看，其余点过去看。全部在 <a href="https://space.bilibili.com/20930172/lists">B 站的系列</a>。</p>
   <ul class="videos">
-    {videos.map((v) => (
+    {videos.slice(0, 3).map((v) => (
       <li>
         {v.data.cover ? <img src={v.data.cover} alt={v.data.title} loading="lazy" /> : <div></div>}
         <div>
           <h3>{v.data.title}</h3>
-          <p>{ymd(v.data.date)}{v.data.xhs ? <> · <a href={v.data.xhs}>小红书</a></> : null}{v.data.douyin ? <> · <a href={v.data.douyin}>抖音</a></> : null}</p>
+          <p>{ymd(v.data.date)}{v.data.xhs ? <> · <a href={v.data.xhs}>小红书</a></> : null}{v.data.bvid ? <> · <a href={`https://www.bilibili.com/video/${v.data.bvid}`}>B 站</a></> : null}</p>
           {v.data.bvid ? <div class="player"><iframe src={`https://player.bilibili.com/player.html?bvid=${v.data.bvid}&autoplay=0&danmaku=0`} scrolling="no" allowfullscreen="true" loading="lazy"></iframe></div> : null}
         </div>
       </li>
     ))}
   </ul>
+  <p class="cap">更早的：</p>
+  <div class="grid">
+    {videos.slice(3).map((v) => (
+      <a class="cell" href={v.data.bvid ? `https://www.bilibili.com/video/${v.data.bvid}` : (v.data.xhs || '#')}>
+        {v.data.cover ? <img src={v.data.cover} alt={v.data.title} loading="lazy" /> : <div class="nocover"></div>}
+        <span>{ymd(v.data.date).slice(5)} · {v.data.title}</span>
+      </a>
+    ))}
+  </div>
 </Base>
