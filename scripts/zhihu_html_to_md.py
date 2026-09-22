@@ -14,7 +14,7 @@ def to_md(body: str) -> str:
         href = href.split('?target=')[-1] if 'link.zhihu.com' in href else href
         uq = __import__('urllib.parse').parse.unquote
         while uq(href) != href: href = uq(href)  # 知乎编码了不止一层
-        href = re.split(r'[））\s\u4e00-\u9fff]', href)[0]  # 知乎把后面的中文也吞进链接了，截掉
+        href = re.split(r'[））\u4e00-\u9fff]', href)[0].strip().replace(' ', '%20')  # 知乎把后面的中文也吞进链接了，截掉；网址里的空格还原成 %20
         text = re.sub(r'<[^>]+>', '', m.group(2)).replace('\u200b', '').strip()
         mm = re.match(r'^(https?://[^\s（）\u4e00-\u9fff]+)(.*)$', text, re.S)
         if mm:  # 正文里本来是裸链接：链接自己指自己，被吞进去的中文原样放回正文
