@@ -11,11 +11,14 @@ def to_md(body: str) -> str:
     s = re.sub(r'<(i|em)[^>]*>(.*?)</\1>', r'*\2*', s, flags=re.S)
     def _a(m):
         href = html.unescape(m.group(1))
-        href = __import__('urllib.parse').parse.unquote(href)
+        href = href.split('?target=')[-1] if 'link.zhihu.com' in href else href
+        uq = __import__('urllib.parse').parse.unquote
+        while uq(href) != href: href = uq(href)  # 知乎编码了不止一层
         href = re.split(r'[））\s\u4e00-\u9fff]', href)[0]  # 知乎把后面的中文也吞进链接了，截掉
-        text = re.sub(r'<[^>]+>', '', m.group(2)).strip().strip('\u200b')
-        if re.match(r'^[（(\s]*https?://', text) or href.split('?target=')[-1] in text:
-            return f'<{href}>'  # 裸链接用尖括号包住，否则渲染器会把后面的中文吞进网址
+        text = re.sub(r'<[^>]+>', '', m.group(2)).replace('\u200b', '').strip()
+        mm = re.match(r'^(https?://[^\s（）\u4e00-\u9fff]+)(.*)$', text, re.S)
+        if mm:  # 正文里本来是裸链接：链接自己指自己，被吞进去的中文原样放回正文
+            return f'[{mm.group(1)}]({href}){mm.group(2)}'
         return f'[{text}]({href})'
     s = re.sub(r'<a[^>]*href="([^"]+)"[^>]*>(.*?)</a>', _a, s, flags=re.S)
     s = re.sub(r'<blockquote[^>]*>(.*?)</blockquote>', lambda m: '\n' + '\n'.join('> ' + l for l in re.sub(r'</?p[^>]*>', '\n', m.group(1)).strip().split('\n')) + '\n', s, flags=re.S)
@@ -27,7 +30,7 @@ def to_md(body: str) -> str:
     s = html.unescape(s)
     # 知乎外链跳转还原
     s = re.sub(r'https://link\.zhihu\.com/\?target=([^)\s]+)', lambda m: html.unescape(__import__('urllib.parse').parse.unquote(m.group(1))), s)
-    s = re.sub(r'(?<![<(\[])(https?://[^\s<>()\[\]（）\u4e00-\u9fff]+)(?=[（）\u4e00-\u9fff])', r'<\1>', s)
+    s = re.sub(r'(?<![<(\[/])(https?://[^\s<>()\[\]（）\u4e00-\u9fff]+)(?=[（）\u4e00-\u9fff])', r'[\1](\1)', s)
     s = re.sub(r'\n{3,}', '\n\n', s).strip() + '\n'
     return s
 
