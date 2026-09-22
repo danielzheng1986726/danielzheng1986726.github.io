@@ -22,7 +22,7 @@ const videoHref = (v) => v.data.bvid ? `https://www.bilibili.com/video/${v.data.
         <div class="body">
           <h3><a href={`/works/${w.id}/`}>{w.data.title}</a></h3>
           <p>{w.data.name} · {w.data.tags.join(' · ')}</p>
-          <a href={`/works/${w.id}/`}>看问题、做法、验证、边界</a>
+          {w.data.link ? <a href={w.data.link}>{w.data.linkText || '打开'}</a> : null}
         </div>
         <Stamp status={w.data.status} />
       </li>
