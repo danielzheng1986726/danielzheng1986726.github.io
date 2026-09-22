@@ -3,8 +3,9 @@
 set -e
 cd "$(dirname "$0")/.."
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
-python3 scripts/sync_writing.py
-python3 scripts/sync_videos.py
+PY=/Library/Frameworks/Python.framework/Versions/3.12/bin/python3
+$PY scripts/sync_writing.py
+$PY scripts/sync_videos.py
 if [[ -n "$(git status --porcelain src/content public/covers)" ]]; then
   git add src/content public/covers
   git -c user.name="Daniel.Z" -c user.email="danielzheng19860726@gmail.com" commit -q -m "sync: $(date +%F) 内容同步"
