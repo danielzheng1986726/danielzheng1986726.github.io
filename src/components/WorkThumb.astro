@@ -1,0 +1,7 @@
+---
+import ZhiduFigure from './ZhiduFigure.astro';
+const { work } = Astro.props;
+---
+<div class="thumb">
+  {work.data.cover ? <img src={work.data.cover} alt={work.data.name} loading="lazy" /> : <ZhiduFigure />}
+</div>

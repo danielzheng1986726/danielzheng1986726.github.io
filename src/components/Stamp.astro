@@ -1,0 +1,5 @@
+---
+const { status } = Astro.props;
+const cls = status === '方法' ? 'stamp method' : 'stamp';
+---
+<span class={cls}>{status}</span>

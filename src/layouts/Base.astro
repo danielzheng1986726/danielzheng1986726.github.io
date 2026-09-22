@@ -1,0 +1,40 @@
+---
+import '../styles/global.css';
+interface Props { title?: string; description?: string; image?: string; current?: string }
+const { title, description = '郑晓东，做 HR，在上海。业余自己写 AI 工具。', image = '/shots/xiaolingtong.png', current = '' } = Astro.props;
+const fullTitle = title ? `${title} · 郑晓东` : '郑晓东 Daniel Zheng';
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const nav = [['/', '首页'], ['/works/', '做过的'], ['/writing/', '写过的'], ['/videos/', '拍过的'], ['/about/', '关于我']];
+---
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={new URL(image, Astro.site)} />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500&display=swap" />
+  <link rel="alternate" type="text/plain" href="/ai.txt" title="给 AI 读的版本" />
+</head>
+<body>
+  <main class="wrap">
+    <div class="mast">
+      <div><a href="/"><b>Daniel Zheng</b></a>　<span>HR × AI builder · Shanghai</span></div>
+      <nav>{nav.map(([href, label]) => <a href={href} aria-current={href === current ? 'page' : undefined}>{label}</a>)}</nav>
+    </div>
+    <slot />
+    <footer>
+      <a href="mailto:danielzheng19860726@gmail.com">邮箱</a>
+      <a href="/about/#wechat">微信（备注来意）</a>
+      <a href="/about/#resume">完整履历可索取</a>
+      <a href="/ai.txt">给 AI 读的版本</a>
+    </footer>
+  </main>
+</body>
+</html>

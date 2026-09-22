@@ -1,0 +1,20 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+export async function getStaticPaths() {
+  const posts = await getCollection('writing', (e) => e.data.onsite);
+  return posts.map((p) => ({ params: { slug: p.id }, props: { post: p } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const d = post.data.date;
+const ymd = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+---
+<Base title={post.data.title} description={post.data.summary} current="/writing/">
+  <div class="work-head">
+    <h1>{post.data.title}</h1>
+    <p class="sub">{ymd} · 原发于 <a href={post.data.source}>{post.data.platform}</a>，评论在那边。</p>
+  </div>
+  <div class="prose"><Content /></div>
+  <div class="backlinks"><a href="/writing/">← 写过的</a><a href="/">首页</a></div>
+</Base>

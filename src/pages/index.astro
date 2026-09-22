@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import Stamp from '../components/Stamp.astro';
+import WorkThumb from '../components/WorkThumb.astro';
+import { getCollection } from 'astro:content';
+const works = (await getCollection('works')).sort((a, b) => a.data.order - b.data.order);
+const writing = (await getCollection('writing', (e) => e.data.onsite)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
+const videos = (await getCollection('videos')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 5);
+const md = (d: Date) => `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const videoHref = (v) => v.data.bvid ? `https://www.bilibili.com/video/${v.data.bvid}` : (v.data.xhs || '/videos/');
+---
+<Base current="/">
+  <h1>我是郑晓东，做 HR，在上海。业余自己写 AI 工具。</h1>
+  <p class="sub">别听我怎么说，看我怎么做。</p>
+
+  <h2>做过的 <a href="/works/">全部 →</a></h2>
+  <ul class="notices">
+    {works.map((w) => (
+      <li class="notice">
+        <a href={`/works/${w.id}/`}><WorkThumb work={w} /></a>
+        <div class="body">
+          <h3><a href={`/works/${w.id}/`}>{w.data.title}</a></h3>
+          <p>{w.data.name} · {w.data.tags.join(' · ')}</p>
+          <a href={`/works/${w.id}/`}>看问题、做法、验证、边界</a>
+        </div>
+        <Stamp status={w.data.status} />
+      </li>
+    ))}
+  </ul>
+
+  <h2>写过的 <a href="/writing/">全部 →</a></h2>
+  <ul class="writes">
+    {writing.map((p) => <li><span class="date">{md(p.data.date)}</span><a href={`/writing/${p.id}/`}>{p.data.title}</a></li>)}
+  </ul>
+
+  <h2>拍过的 <a href="/videos/">全部 →</a></h2>
+  <div class="strip">
+    {videos.map((v) => (
+      <a href={videoHref(v)}>{v.data.cover ? <img src={v.data.cover} alt={v.data.title} loading="lazy" /> : null}<span>{md(v.data.date)}</span></a>
+    ))}
+  </div>
+  <p class="cap">每天一条口播，讲 HR 怎么用 AI。这是最近五条，点封面看视频，全部在 <a href="https://space.bilibili.com/20930172">B 站</a>。</p>
+</Base>

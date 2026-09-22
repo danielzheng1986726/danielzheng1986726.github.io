@@ -1,0 +1,13 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const posts = (await getCollection('writing', (e) => e.data.onsite)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const md = (d: Date) => `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+---
+<Base title="写过的" current="/writing/">
+  <h1>写过的</h1>
+  <p class="sub">HR 圈里流传的说法，我一条条查过原始出处再写。全文在这里，评论在原发的平台。</p>
+  <ul class="writes">
+    {posts.map((p) => <li><span class="date">{md(p.data.date)}</span><a href={`/writing/${p.id}/`}>{p.data.title}</a></li>)}
+  </ul>
+</Base>

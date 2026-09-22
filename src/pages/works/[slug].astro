@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import Stamp from '../../components/Stamp.astro';
+import { getCollection, render } from 'astro:content';
+export async function getStaticPaths() {
+  const works = await getCollection('works');
+  return works.map((w) => ({ params: { slug: w.id }, props: { work: w } }));
+}
+const { work } = Astro.props;
+const { Content } = await render(work);
+---
+<Base title={work.data.name} description={work.data.title} image={work.data.cover} current="/works/">
+  <div class="work-head">
+    <Stamp status={work.data.status} />
+    <h1>{work.data.title}</h1>
+    <p class="sub">{work.data.name}{work.data.link ? <> · <a href={work.data.link}>{work.data.linkText || '打开'}</a></> : null}</p>
+  </div>
+  {work.data.cover ? <figure class="work-figure"><img src={work.data.cover} alt={work.data.name} /></figure> : null}
+  <div class="prose"><Content /></div>
+  <div class="backlinks"><a href="/works/">← 做过的</a><a href="/">首页</a></div>
+</Base>
