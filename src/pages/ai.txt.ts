@@ -24,7 +24,7 @@ export async function GET() {
   for (const p of writing) lines.push(`- ${ymd(p.data.date)} ${p.data.title} · ${p.data.source}`);
   lines.push('');
   lines.push('## 讲过的');
-  lines.push('### 播客《在路上》 https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb69f');
+  lines.push('### 播客「在路上 | ON THE ROAD」 https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb69f');
   for (const e of podcast) lines.push(`- ${ymd(e.data.date)} ${e.data.title} · ${e.data.url}`);
   lines.push('');
   lines.push('### 口播（每天一条，讲 HR 怎么用 AI）');
