@@ -4,7 +4,7 @@
 上不上站：条目里手写「上站：是/否」说了算；没写就看「主题线」，职场和 AI科技 自动上，其余不上。可选：站内标题（没有就用条目标题）。
 正文用知乎 CLI 拉本人全文，转 Markdown，写到 src/content/writing/<date>-<token>.md。
 已存在且正文未变则不动；上站改成否则删除对应文件。"""
-import re, os, sys, json, subprocess, pathlib
+import re, os, sys, json, subprocess, pathlib, time
 sys.path.insert(0, os.path.dirname(__file__))
 from zhihu_html_to_md import to_md
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -44,6 +44,7 @@ for title, date, body in entries:
     summary = summary.group(1).strip() if summary else ''
     fn = OUT / f'{date}-{token.group(1)}.md'
     keep.add(fn.name)
+    time.sleep(4)   # 知乎 CLI 连着调会报 rate limit
     r = subprocess.run([str(CLI), 'me', 'content', '--content-url', url], capture_output=True, text=True)
     try:
         d = json.loads(r.stdout)
