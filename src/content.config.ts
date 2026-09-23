@@ -22,6 +22,8 @@ const writing = defineCollection({
     date: z.coerce.date(),
     source: z.string().url(),
     platform: z.string().default('知乎'),
+    kind: z.enum(['answer', 'article']).default('article'),
+    question: z.string().default(''),
     onsite: z.boolean().default(true),
     summary: z.string().optional(),
   }),

@@ -8,6 +8,6 @@ const md = (d: Date) => `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d
   <h1>写过的</h1>
   <p class="sub">HR 圈里流传的说法，我一条条查过原始出处再写。全文在这里，评论在原发的平台。</p>
   <ul class="writes">
-    {posts.map((p) => <li><span class="date">{md(p.data.date)}</span><a href={`/writing/${p.id}/`}>{p.data.title}</a></li>)}
+    {posts.map((p) => <li><span class="date">{md(p.data.date)}</span><span><a href={`/writing/${p.id}/`}>{p.data.title}</a>{p.data.question ? <span class="cap" style="display:block;margin:2px 0 0">回答：{p.data.question}</span> : null}</span></li>)}
   </ul>
 </Base>

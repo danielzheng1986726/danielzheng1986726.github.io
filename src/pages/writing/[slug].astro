@@ -15,6 +15,12 @@ const ymd = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${S
     <h1>{post.data.title}</h1>
     <p class="sub">{ymd} · 原发于 <a href={post.data.source}>{post.data.platform}</a>，评论在那边。</p>
   </div>
+  {post.data.kind === 'answer' && post.data.question ? (
+    <div class="asked">
+      <span>这是一篇知乎回答，题主问的是：</span>
+      <a href={post.data.source.replace(/\/answer\/\d+.*$/, '') || post.data.source}>{post.data.question}</a>
+    </div>
+  ) : null}
   <div class="prose"><Content /></div>
   <div class="backlinks"><a href="/writing/">← 写过的</a><a href="/">首页</a></div>
 </Base>

@@ -40,6 +40,9 @@ footer{margin-top:40px;border-top:3px solid var(--line);padding-top:14px;display
 .work-figure{margin:16px 0 8px;border:1px solid var(--soft)}
 .work-figure img{width:100%}
 .work-figure figcaption{font-size:12px;color:var(--muted);padding:6px 8px}
+.asked{border-left:3px solid var(--line);background:var(--soft);padding:10px 14px;margin:0 0 20px;max-width:65ch}
+.asked span{display:block;font-size:12px;color:var(--muted);margin-bottom:2px}
+.asked a{font-family:"Noto Serif SC",serif;font-weight:700;text-decoration:none}
 .prose{max-width:65ch}
 .prose h2{font-size:17px;border:0;padding:0;margin:28px 0 8px;display:block}
 .prose p{margin:0 0 12px}
