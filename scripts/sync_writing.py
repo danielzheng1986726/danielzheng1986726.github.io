@@ -21,7 +21,10 @@ try:
         if m_: QTITLE[m_.group(1)] = it.get('Title', '')
 except Exception:
     QTITLE = {}
-entries = re.findall(r'^### (.+?) · (\d{4}-\d{2}-\d{2})\n(.*?)(?=^### |\Z)', s, re.S | re.M)
+# 只解析「## 条目」以下；标题限定在一行内。09-25 教训：模板里的「### [标题缩写] · YYYY-MM-DD」不是数字日期，
+# 旧正则 (.+?) 在 re.S 下跨行一路吞到第一个真实条目，站内标题变成整段模板。
+s = s.split('\n## 条目\n', 1)[-1]
+entries = re.findall(r'^### ([^\n]+?) · (\d{4}-\d{2}-\d{2})\n(.*?)(?=^### |\Z)', s, re.S | re.M)
 keep = set()
 for title, date, body in entries:
     link = re.search(r'链接：(https?://\S+)', body)
