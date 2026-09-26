@@ -99,5 +99,12 @@
     "title": "AI分析原因有个坑，让两个AI分开想",
     "cover": "/covers/2026-09-26-causal-analysis-prompt.jpg",
     "bvid": "BV1Xsau6fEwy"
+  },
+  {
+    "id": "2026-09-27-plain-talk-prompt",
+    "date": "2026-09-26",
+    "title": "AI说话你看不懂？这条prompt让它说人话",
+    "cover": "/covers/2026-09-27-plain-talk-prompt.jpg",
+    "bvid": "BV1CVhX6AEav"
   }
 ]
