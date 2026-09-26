@@ -1,5 +1,5 @@
 ---
 const { status } = Astro.props;
-const cls = status === '方法' ? 'stamp method' : 'stamp';
+const cls = status === '在运行' ? 'stamp live' : status === '方法' ? 'stamp method' : 'stamp quiet';
 ---
 <span class={cls}>{status}</span>

@@ -5,13 +5,14 @@ import WorkThumb from '../components/WorkThumb.astro';
 import { getCollection } from 'astro:content';
 const works = (await getCollection('works')).sort((a, b) => a.data.order - b.data.order);
 const writing = (await getCollection('writing', (e) => e.data.onsite)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
-const videos = (await getCollection('videos', (v) => !!v.data.cover)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 5);
-const podcast = (await getCollection('podcast')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
+const video = (await getCollection('videos', (v) => !!v.data.cover)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
+const episode = (await getCollection('podcast')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
 const md = (d: Date) => `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-const videoHref = (v) => v.data.bvid ? `https://www.bilibili.com/video/${v.data.bvid}` : (v.data.xhs || '/videos/');
+const videoHref = (v) => v.data.bvid ? `https://www.bilibili.com/video/${v.data.bvid}` : (v.data.xhs || '/talks/');
+const podcastHref = 'https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb69f';
 ---
 <Base current="/">
-  <h1>我是郑晓东，做 HR，在上海。业余自己写 AI 工具。</h1>
+  <h1><span class="nb">我是郑晓东，</span><span class="nb">做 HR，</span><span class="nb">在上海</span><br /><span class="nb">业余自己写 AI 工具</span></h1>
   <p class="sub">别听我怎么说，看我怎么做。</p>
 
   <h2>做过的 <a href="/works/">全部 →</a></h2>
@@ -20,9 +21,9 @@ const videoHref = (v) => v.data.bvid ? `https://www.bilibili.com/video/${v.data.
       <li class="notice">
         <a href={`/works/${w.id}/`}><WorkThumb work={w} /></a>
         <div class="body">
-          <h3><a href={`/works/${w.id}/`}>{w.data.title}</a></h3>
+          <h3><a href={`/works/${w.id}/`}>{w.data.title.replace(/(\d) /g, "$1\u00a0")}</a></h3>
           <p>{w.data.name} · {w.data.tags.join(' · ')}</p>
-          {w.data.link ? <a href={w.data.link}>{w.data.linkText || '打开'}</a> : null}
+          {w.data.link ? <a class="go" href={w.data.link}>{w.data.linkText || '打开'}</a> : null}
         </div>
         <Stamp status={w.data.status} />
       </li>
@@ -35,19 +36,24 @@ const videoHref = (v) => v.data.bvid ? `https://www.bilibili.com/video/${v.data.
   </ul>
 
   <h2>讲过的 <a href="/talks/">全部 →</a></h2>
-  <div class="strip">
-    {videos.map((v) => (
-      <a href={videoHref(v)}>{v.data.cover ? <img src={v.data.cover} alt={v.data.title} loading="lazy" /> : null}<span>{md(v.data.date)}</span></a>
-    ))}
-  </div>
-  <p class="cap">每天一条口播，讲 HR 怎么用 AI。这是最近五条，点封面看视频，全部在 <a href="https://space.bilibili.com/20930172/lists">B 站的系列</a>。</p>
-  <div class="podcast">
-    <a href="https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb69f"><img src="/shots/podcast-cover.jpg" alt="播客「在路上 | ON THE ROAD」封面" loading="lazy" /></a>
-    <div>
-      <h3>播客「在路上 | ON THE ROAD」</h3>
-      <p>和嘉宾聊 AI 落到普通人身上是什么样。最近几期：</p>
-      <ul>{podcast.map((e) => <li><a href={e.data.url}>{e.data.title}</a></li>)}</ul>
-      <p class="cap">全部在 <a href="https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb69f">小宇宙</a>。</p>
-    </div>
-  </div>
+  <ul class="notices">
+    {video ? (
+      <li class="notice">
+        <a href={videoHref(video)}><div class="thumb face"><img src={video.data.cover} alt={video.data.title} loading="lazy" /></div></a>
+        <div class="body">
+          <h3><a href="/talks/">每天一条口播，讲 HR 怎么用 AI</a></h3>
+          <p>最新 {md(video.data.date)}：<a href={videoHref(video)}>{video.data.title}</a></p>
+        </div>
+      </li>
+    ) : null}
+    {episode ? (
+      <li class="notice">
+        <a href={podcastHref}><div class="thumb logo"><img src="/shots/podcast-cover.jpg" alt="播客「在路上 | ON THE ROAD」封面" loading="lazy" /></div></a>
+        <div class="body">
+          <h3><a href={podcastHref}>播客「在路上」，和嘉宾聊 AI 落到普通人身上</a></h3>
+          <p>最新：<a href={episode.data.url}>{episode.data.title.split(' ｜ ')[0].replace(/^Vol\.\d+\s*\|\s*/, '')}</a></p>
+        </div>
+      </li>
+    ) : null}
+  </ul>
 </Base>

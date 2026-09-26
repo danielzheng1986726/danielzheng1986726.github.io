@@ -5,4 +5,5 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'always',
   redirects: { '/videos/': '/talks/' },
+  devToolbar: { enabled: false },
 });

@@ -12,14 +12,14 @@ const ymd = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart
   <div class="podcast">
     <a href="https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb69f"><img src="/shots/podcast-cover.jpg" alt="播客「在路上 | ON THE ROAD」封面" loading="lazy" /></a>
     <div>
-      <p>和嘉宾聊 AI 落到普通人身上是什么样：有人在公司里推 AI，有人被 AI 改了工作，有人半年后回来再聊一次。全部在 <a href="https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb69f">小宇宙</a>。</p>
+      <p>和嘉宾聊 AI 落到普通人身上是什么样：有人在公司里推 AI，有人的工作让 AI 给改了，有人半年后回来再聊一次。全部在 <a href="https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb69f">小宇宙</a>。</p>
     </div>
   </div>
   <ul class="writes">
     {podcast.map((e) => <li><span class="date">{ymd(e.data.date).slice(2)}</span><a href={e.data.url}>{e.data.title}</a><span class="cap">{e.data.minutes} 分钟</span></li>)}
   </ul>
   <h2>口播</h2>
-  <p class="sub">每天一条，讲 HR 怎么用 AI。有 B 站编号的能在这里直接看，其余点过去看。全部在 <a href="https://space.bilibili.com/20930172/lists">B 站的系列</a>。</p>
+  <p class="sub">每天一条，讲 HR 怎么用 AI。有 B 站编号的能直接在这儿看，其余的点过去看。全部在 <a href="https://space.bilibili.com/20930172/lists">B 站的系列</a>。</p>
   <ul class="videos">
     {videos.slice(0, 3).map((v) => (
       <li>

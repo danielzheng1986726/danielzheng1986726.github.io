@@ -7,13 +7,13 @@ const works = (await getCollection('works')).sort((a, b) => a.data.order - b.dat
 ---
 <Base title="做过的" current="/works/">
   <h1>做过的</h1>
-  <p class="sub">每件都按同一个顺序写：遇到什么问题，怎么做的，拿什么验证，边界在哪。</p>
+  <p class="sub">每件事都按同一个顺序写：遇到什么问题，怎么做的，拿什么验证，边界在哪。</p>
   <ul class="notices">
     {works.map((w) => (
       <li class="notice">
         <a href={`/works/${w.id}/`}><WorkThumb work={w} /></a>
         <div class="body">
-          <h3><a href={`/works/${w.id}/`}>{w.data.title}</a></h3>
+          <h3><a href={`/works/${w.id}/`}>{w.data.title.replace(/(\d) /g, "$1\u00a0")}</a></h3>
           <p>{w.data.name} · {w.data.tags.join(' · ')}</p>
         </div>
         <Stamp status={w.data.status} />
