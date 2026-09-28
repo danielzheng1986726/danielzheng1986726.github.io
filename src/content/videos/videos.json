@@ -113,5 +113,12 @@
     "title": "AI说查不到？它可能根本没认真查",
     "cover": "/covers/2026-09-27-cant-find-prompt.jpg",
     "bvid": "BV1aXax6yE8F"
+  },
+  {
+    "id": "2026-09-28-didnt-read-prompt",
+    "date": "2026-09-28",
+    "title": "让AI总结长文档？先问它读到哪了",
+    "cover": "/covers/2026-09-28-didnt-read-prompt.jpg",
+    "bvid": "BV1X3aq6GEvH"
   }
 ]
