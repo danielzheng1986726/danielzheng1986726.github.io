@@ -120,5 +120,12 @@
     "title": "让AI总结长文档？先问它读到哪了",
     "cover": "/covers/2026-09-28-didnt-read-prompt.jpg",
     "bvid": "BV1X3aq6GEvH"
+  },
+  {
+    "id": "2026-09-29-teleprompter-app",
+    "date": "2026-09-29",
+    "title": "我让AI做了个提词器，字跟着我说话翻页",
+    "cover": "/covers/2026-09-29-teleprompter-app.jpg",
+    "bvid": "BV1nPaE6NEkD"
   }
 ]
