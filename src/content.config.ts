@@ -56,6 +56,7 @@ const tools = defineCollection({
     status: z.enum(['在用', '用过一次', '已停']),
     pain: z.string(),               // 一句痛点
     updated: z.string(),            // 最后改动 YYYY-MM
+    video: z.string().optional(),   // 讲解短片，放在 public/clips/
   }),
 });
 

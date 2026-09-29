@@ -23,7 +23,7 @@ export async function GET() {
   }
   if (tools.length) {
     lines.push('## 顺手做的（代码：https://github.com/danielzheng1986726/daniel-tools）');
-    for (const t of tools) lines.push(`- ${t.data.name}（${t.data.form}，${t.data.status}）：${t.data.pain} https://github.com/danielzheng1986726/daniel-tools/tree/main/${t.id}`);
+    for (const t of tools) lines.push(`- ${t.data.name}（${t.data.form}，${t.data.status}）：${t.data.pain} https://github.com/danielzheng1986726/daniel-tools/tree/main/${t.id}${t.data.video ? ` 讲解视频：https://danielzheng1986726.github.io${t.data.video}` : ''}`);
     lines.push('');
   }
   lines.push('## 写过的');

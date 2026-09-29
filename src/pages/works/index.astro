@@ -31,7 +31,7 @@ const repo = 'https://github.com/danielzheng1986726/daniel-tools';
         {tools.map((t) => (
           <li>
             <div class="tl"><a href={`${repo}/tree/main/${t.id}`}>{t.data.name}</a><span class="meta">{t.data.form} · {t.data.status}</span></div>
-            <p>{t.data.pain}</p>
+            <p>{t.data.pain}{t.data.video ? <> <a class="vid" href={t.data.video}>看讲解视频 →</a></> : null}</p>
           </li>
         ))}
       </ul>
