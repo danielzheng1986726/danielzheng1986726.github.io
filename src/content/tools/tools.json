@@ -3,7 +3,7 @@
   { "id": "gemini-notebook-cleaner", "name": "Gemini Notebook 批量清理", "form": "浏览器脚本", "status": "用过一次", "updated": "2026-09", "pain": "攒了 260 个 notebook，网页上只能一个个手点删除，写了个脚本贴进控制台跑完。" },
   { "id": "local-transcribe", "name": "本机转写", "form": "命令行", "status": "在用", "updated": "2026-09", "pain": "播客和视频要文字稿，转写服务要么收费，要么音频得传出去，改成全在本机跑。", "video": "/clips/local-transcribe.mp4" },
   { "id": "ai-edit-fidelity-gate", "name": "AI 改稿保真闸", "form": "命令行", "status": "在用", "updated": "2026-09", "pain": "让 AI 改稿，它常悄悄改掉数字、删掉链接、打乱小标题，改完自动比对一遍。", "video": "/clips/ai-edit-fidelity-gate.mp4" },
-  { "id": "multipost-draft-filler", "name": "多平台灌草稿", "form": "命令行", "status": "在用", "updated": "2026-09", "pain": "一篇文章要挨个粘进公众号、知乎、小红书的编辑器，改成一条命令灌进各家草稿箱。" },
+  { "id": "multipost-draft-filler", "name": "多平台灌草稿", "form": "命令行", "status": "在用", "updated": "2026-09", "pain": "一篇文章要挨个粘进公众号、知乎、小红书的编辑器，改成一条命令灌进各家草稿箱。", "video": "/clips/multipost-draft-filler.mp4" },
   { "id": "talking-head-checks", "name": "口播交付前检查", "form": "命令行", "status": "在用", "updated": "2026-09", "pain": "字幕听错了字、剪辑里留着卡住的空档，常规检查都测不出来，写了三个脚本专门查。" },
   { "id": "claude-usage-audit", "name": "Claude Code 用量审计", "form": "命令行", "status": "在用", "updated": "2026-09", "pain": "看不清 AI 额度花在了哪个项目、哪个模型上，读本机会话记录自己算。" },
   { "id": "wechat-text-cover", "name": "公众号文字封面", "form": "命令行", "status": "在用", "updated": "2026-09", "pain": "AI 生图做封面每次都不一样还得挑，改成纯文字排版，同一个标题永远出同一张图。" },
