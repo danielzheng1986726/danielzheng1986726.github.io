@@ -47,4 +47,16 @@ const podcast = defineCollection({
   schema: z.object({ id: z.string(), date: z.coerce.date(), title: z.string(), minutes: z.number(), url: z.string().url() }),
 });
 
-export const collections = { works, writing, videos, podcast };
+const tools = defineCollection({
+  loader: file('./src/content/tools/tools.json'),
+  schema: z.object({
+    id: z.string(),                 // 同时是 daniel-tools 仓库里的文件夹名
+    name: z.string(),
+    form: z.string(),               // 形态：命令行 / 浏览器脚本 / iOS App …
+    status: z.enum(['在用', '用过一次', '已停']),
+    pain: z.string(),               // 一句痛点
+    updated: z.string(),            // 最后改动 YYYY-MM
+  }),
+});
+
+export const collections = { works, writing, videos, podcast, tools };

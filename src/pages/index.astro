@@ -4,6 +4,7 @@ import Stamp from '../components/Stamp.astro';
 import WorkThumb from '../components/WorkThumb.astro';
 import { getCollection } from 'astro:content';
 const works = (await getCollection('works')).sort((a, b) => a.data.order - b.data.order);
+const hasTools = (await getCollection('tools')).length > 0;
 const writing = (await getCollection('writing', (e) => e.data.onsite)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
 const video = (await getCollection('videos', (v) => !!v.data.cover)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
 const episode = (await getCollection('podcast')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
@@ -29,6 +30,7 @@ const podcastHref = 'https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb6
       </li>
     ))}
   </ul>
+  {hasTools ? <p class="more"><a href="/works/#tools">还有一些顺手做的小工具 →</a></p> : null}
 
   <h2>写过的 <a href="/writing/">全部 →</a></h2>
   <ul class="writes">

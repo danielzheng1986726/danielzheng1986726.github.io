@@ -4,6 +4,9 @@ import Stamp from '../../components/Stamp.astro';
 import WorkThumb from '../../components/WorkThumb.astro';
 import { getCollection } from 'astro:content';
 const works = (await getCollection('works')).sort((a, b) => a.data.order - b.data.order);
+const rank = { '在用': 0, '用过一次': 1, '已停': 2 };
+const tools = (await getCollection('tools')).sort((a, b) => rank[a.data.status] - rank[b.data.status] || b.data.updated.localeCompare(a.data.updated));
+const repo = 'https://github.com/danielzheng1986726/daniel-tools';
 ---
 <Base title="做过的" current="/works/">
   <h1>做过的</h1>
@@ -20,4 +23,18 @@ const works = (await getCollection('works')).sort((a, b) => a.data.order - b.dat
       </li>
     ))}
   </ul>
+  {tools.length ? (
+    <>
+      <h2 id="tools">顺手做的 <a href={repo}>GitHub →</a></h2>
+      <p class="sub">身边冒出来的小麻烦，顺手写个工具解决掉。代码都在一个公开仓库里，拿去用之前先看每个文件夹里的说明。</p>
+      <ul class="tools">
+        {tools.map((t) => (
+          <li>
+            <div class="tl"><a href={`${repo}/tree/main/${t.id}`}>{t.data.name}</a><span class="meta">{t.data.form} · {t.data.status}</span></div>
+            <p>{t.data.pain}</p>
+          </li>
+        ))}
+      </ul>
+    </>
+  ) : null}
 </Base>

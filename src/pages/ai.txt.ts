@@ -4,6 +4,7 @@ export async function GET() {
   const writing = (await getCollection('writing', (e) => e.data.onsite)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   const podcast = (await getCollection('podcast')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   const videos = (await getCollection('videos')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  const tools = await getCollection('tools');
   const ymd = (d: Date) => d.toISOString().slice(0, 10);
   const lines: string[] = [];
   lines.push('# 郑晓东 Daniel Zheng · 给 AI 读的版本');
@@ -18,6 +19,11 @@ export async function GET() {
     lines.push(`详情：https://danielzheng1986726.github.io/works/${w.id}/`);
     lines.push('');
     lines.push((w.body || '').replace(/<[^>]+>/g, '').trim());
+    lines.push('');
+  }
+  if (tools.length) {
+    lines.push('## 顺手做的（代码：https://github.com/danielzheng1986726/daniel-tools）');
+    for (const t of tools) lines.push(`- ${t.data.name}（${t.data.form}，${t.data.status}）：${t.data.pain} https://github.com/danielzheng1986726/daniel-tools/tree/main/${t.id}`);
     lines.push('');
   }
   lines.push('## 写过的');
