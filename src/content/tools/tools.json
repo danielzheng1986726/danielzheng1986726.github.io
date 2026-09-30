@@ -7,7 +7,7 @@
   { "id": "talking-head-checks", "name": "口播交付前检查", "form": "命令行", "status": "在用", "updated": "2026-09", "pain": "字幕听错了字、剪辑里留着卡住的空档，常规检查都测不出来，写了三个脚本专门查。" },
   { "id": "claude-usage-audit", "name": "Claude Code 用量审计", "form": "命令行", "status": "在用", "updated": "2026-09", "pain": "看不清 AI 额度花在了哪个项目、哪个模型上，读本机会话记录自己算。" },
   { "id": "wechat-text-cover", "name": "公众号文字封面", "form": "命令行", "status": "在用", "updated": "2026-09", "pain": "AI 生图做封面每次都不一样还得挑，改成纯文字排版，同一个标题永远出同一张图。" },
-  { "id": "xhs-card-renderer", "name": "小红书卡片渲染", "form": "命令行", "status": "在用", "updated": "2026-08", "pain": "知识笔记排成小红书卡片图，手工截图排版太慢，写好 Markdown 自动出图。" },
+  { "id": "xhs-card-renderer", "name": "小红书卡片渲染", "form": "命令行", "status": "在用", "updated": "2026-08", "pain": "知识笔记排成小红书卡片图，手工截图排版太慢，写好 Markdown 自动出图。", "video": "/clips/xhs-card-renderer.mp4" },
   { "id": "asr-hotword-sync", "name": "转写热词同步", "form": "命令行", "status": "在用", "updated": "2026-08", "pain": "转写老把人名和产品名听成同音字，把对照表同步成热词，从源头少出错。" },
   { "id": "md-to-wechat-html", "name": "Markdown 转公众号样式", "form": "命令行", "status": "在用", "updated": "2026-07", "pain": "公众号编辑器不认样式表，Markdown 贴进去是一篇白板，把样式逐个写进标签里。" },
   { "id": "dreamina-queue", "name": "即梦可靠提交队列", "form": "命令行", "status": "在用", "updated": "2026-05", "pain": "即梦的生成任务提交后常变成查不到结果的幽灵任务，写了个能识别并自动重提的队列。" },
