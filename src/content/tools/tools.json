@@ -11,7 +11,7 @@
   { "id": "asr-hotword-sync", "name": "转写热词同步", "form": "命令行", "status": "在用", "updated": "2026-08", "pain": "转写老把人名和产品名听成同音字，把对照表同步成热词，从源头少出错。" },
   { "id": "md-to-wechat-html", "name": "Markdown 转公众号样式", "form": "命令行", "status": "在用", "updated": "2026-07", "pain": "公众号编辑器不认样式表，Markdown 贴进去是一篇白板，把样式逐个写进标签里。" },
   { "id": "dreamina-queue", "name": "即梦可靠提交队列", "form": "命令行", "status": "在用", "updated": "2026-05", "pain": "即梦的生成任务提交后常变成查不到结果的幽灵任务，写了个能识别并自动重提的队列。" },
-  { "id": "ppt-image-generator", "name": "本地 PPT 出图", "form": "命令行", "status": "在用", "updated": "2026-05", "pain": "几页有设计感的 PPT 图，在设计工具里调版式太慢，按固定风格批量出图。" },
+  { "id": "ppt-image-generator", "name": "本地 PPT 出图", "form": "命令行", "status": "在用", "updated": "2026-05", "pain": "几页有设计感的 PPT 图，在设计工具里调版式太慢，按固定风格批量出图。", "video": "/clips/ppt-image-generator.mp4" },
   { "id": "feishu-shots-sync", "name": "分镜同步飞书", "form": "命令行", "status": "在用", "updated": "2026-04", "pain": "视频分镜一条条往飞书表格里录太慢，还容易漏传关键帧，读一份清单批量建。" },
   { "id": "ffmpeg-video-assembler", "name": "FFmpeg 视频自动拼接", "form": "命令行", "status": "在用", "updated": "2026-04", "pain": "转场、配乐淡入淡出每次都要重调 FFmpeg 参数，写一份配置让它自动拼。" },
   { "id": "podcast-transcript-cleaner", "name": "播客转写稿清洗", "form": "命令行", "status": "在用", "updated": "2026-04", "pain": "机器转写稿分不清说话人、专名成了同音字，一条命令交给 Claude Code 清洗。" },
