@@ -1,5 +1,5 @@
 [
-  { "id": "teleprompter-ios", "name": "提词器", "form": "iOS App", "status": "在用", "updated": "2026-09", "pain": "剪映提词要么跟不上嘴，要么语速一变就得伸手划，自己写了一个只在该翻页时才翻的。" },
+  { "id": "teleprompter-ios", "name": "提词器", "form": "iOS App", "status": "在用", "updated": "2026-09", "pain": "剪映提词要么跟不上嘴，要么语速一变就得伸手划，自己写了一个只在该翻页时才翻的。", "video": "https://www.bilibili.com/video/BV1nPaE6NEkD" },
   { "id": "gemini-notebook-cleaner", "name": "Gemini Notebook 批量清理", "form": "浏览器脚本", "status": "用过一次", "updated": "2026-09", "pain": "攒了 260 个 notebook，网页上只能一个个手点删除，写了个脚本贴进控制台跑完。" },
   { "id": "local-transcribe", "name": "本机转写", "form": "命令行", "status": "在用", "updated": "2026-09", "pain": "播客和视频要文字稿，转写服务要么收费，要么音频得传出去，改成全在本机跑。", "video": "/clips/local-transcribe.mp4" },
   { "id": "ai-edit-fidelity-gate", "name": "AI 改稿保真闸", "form": "命令行", "status": "在用", "updated": "2026-09", "pain": "让 AI 改稿，它常悄悄改掉数字、删掉链接、打乱小标题，改完自动比对一遍。", "video": "/clips/ai-edit-fidelity-gate.mp4" },
