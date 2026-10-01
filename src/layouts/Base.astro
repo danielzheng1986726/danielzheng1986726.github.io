@@ -4,6 +4,14 @@ interface Props { title?: string; description?: string; image?: string; current?
 const { title, description = '郑晓东，做 HR，在上海。业余自己写 AI 工具。', image = '/shots/xiaolingtong.png', current = '' } = Astro.props;
 const fullTitle = title ? `${title} · 郑晓东` : '郑晓东 Daniel Zheng';
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const person = {
+  '@context': 'https://schema.org', '@type': 'Person',
+  name: '郑晓东', alternateName: 'Daniel Zheng', url: Astro.site?.href,
+  description: '做 HR，在上海。业余自己写 AI 工具。',
+  jobTitle: 'HR', address: { '@type': 'PostalAddress', addressLocality: '上海' },
+  email: 'mailto:danielzheng19860726@gmail.com',
+  sameAs: ['https://space.bilibili.com/20930172', 'https://github.com/danielzheng1986726', 'https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb69f'],
+};
 const nav = [['/', '首页'], ['/works/', '做过的'], ['/writing/', '写过的'], ['/talks/', '讲过的'], ['/about/', '关于我']];
 ---
 <!doctype html>
@@ -21,6 +29,7 @@ const nav = [['/', '首页'], ['/works/', '做过的'], ['/writing/', '写过的
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500&display=swap" />
   <link rel="alternate" type="text/plain" href="/ai.txt" title="给 AI 读的版本" />
+  {current === '/' ? <script type="application/ld+json" set:html={JSON.stringify(person)} /> : null}
 </head>
 <body>
   <main class="wrap">

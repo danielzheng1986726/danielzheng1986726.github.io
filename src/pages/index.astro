@@ -4,13 +4,28 @@ import Stamp from '../components/Stamp.astro';
 import WorkThumb from '../components/WorkThumb.astro';
 import { getCollection } from 'astro:content';
 const works = (await getCollection('works')).sort((a, b) => a.data.order - b.data.order);
-const hasTools = (await getCollection('tools')).length > 0;
+const clips = (await getCollection('tools')).filter((t) => t.data.video?.startsWith('/clips/'));
 const writing = (await getCollection('writing', (e) => e.data.onsite)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
-const video = (await getCollection('videos', (v) => !!v.data.cover)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
+const videos = (await getCollection('videos')).sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
 const episode = (await getCollection('podcast')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
 const md = (d: Date) => `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 const videoHref = (v) => v.data.bvid ? `https://www.bilibili.com/video/${v.data.bvid}` : (v.data.xhs || '/talks/');
 const podcastHref = 'https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb69f';
+
+// 口播日历：一格一天，周一开头。日期按 UTC 算，和 videos.json 里的写法一致。
+const DAY = 86400000;
+const key = (t: number) => new Date(t).toISOString().slice(0, 10);
+const byDay = new Map<string, typeof videos>();
+for (const v of videos) { const k = key(v.data.date.valueOf()); byDay.set(k, [...(byDay.get(k) || []), v]); }
+const first = videos[0].data.date.valueOf();
+const last = videos[videos.length - 1].data.date.valueOf();
+const monday = (t: number) => t - ((new Date(t).getUTCDay() + 6) % 7) * DAY;
+const days: { t: number; k: string; inRange: boolean; vs: typeof videos }[] = [];
+for (let t = monday(first); t <= monday(last) + 6 * DAY; t += DAY) {
+  const k = key(t);
+  days.push({ t, k, inRange: t >= first && t <= last, vs: byDay.get(k) || [] });
+}
+const dayLabel = (t: number) => { const d = new Date(t); return d.getUTCDate() === 1 ? `${d.getUTCMonth() + 1}/1` : String(d.getUTCDate()); };
 ---
 <Base current="/">
   <h1><span class="nb">我是郑晓东，</span><span class="nb">做 HR，</span><span class="nb">在上海</span><br /><span class="nb">业余自己写 AI 工具</span></h1>
@@ -22,7 +37,7 @@ const podcastHref = 'https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb6
       <li class="notice">
         <a href={`/works/${w.id}/`}><WorkThumb work={w} /></a>
         <div class="body">
-          <h3><a href={`/works/${w.id}/`}>{w.data.title.replace(/(\d) /g, "$1\u00a0")}</a></h3>
+          <h3><a href={`/works/${w.id}/`}>{w.data.title.replace(/(\d) /g, "$1 ")}</a></h3>
           <p>{w.data.name} · {w.data.tags.join(' · ')}</p>
           {w.data.link ? <a class="go" href={w.data.link}>{w.data.linkText || '打开'}</a> : null}
         </div>
@@ -30,25 +45,48 @@ const podcastHref = 'https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb6
       </li>
     ))}
   </ul>
-  {hasTools ? <p class="more"><a href="/works/#tools">还有一些顺手做的小工具 →</a></p> : null}
 
-  <h2>写过的 <a href="/writing/">全部 →</a></h2>
-  <ul class="writes">
-    {writing.map((p) => <li><span class="date">{md(p.data.date)}</span><a href={`/writing/${p.id}/`}>{p.data.title}</a></li>)}
-  </ul>
+  {clips.length ? (
+    <>
+      <h2>顺手做的 <a href="/works/#tools">全部 →</a></h2>
+      <p class="cap">身边冒出来的小麻烦，顺手写个工具解决掉。这几个各配了一支讲解，关着声音也看得懂。</p>
+      <ul class="clips">
+        {clips.map((t) => (
+          <li>
+            <button type="button" class="clip" aria-label={`播放：${t.data.name}`}>
+              <video src={t.data.video} poster={t.data.video.replace(/\.mp4$/, '.jpg')} preload="none" playsinline muted></video>
+            </button>
+            <b>{t.data.name}</b>
+          </li>
+        ))}
+      </ul>
+    </>
+  ) : null}
 
   <h2>讲过的 <a href="/talks/">全部 →</a></h2>
-  <ul class="notices">
-    {video ? (
-      <li class="notice">
-        <a href={videoHref(video)}><div class="thumb face"><img src={video.data.cover} alt={video.data.title} loading="lazy" /></div></a>
-        <div class="body">
-          <h3><a href="/talks/">每天一条口播，讲 HR 怎么用 AI</a></h3>
-          <p>最新 {md(video.data.date)}：<a href={videoHref(video)}>{video.data.title}</a></p>
-        </div>
-      </li>
-    ) : null}
-    {episode ? (
+  <h3 class="lead">每天一条口播，讲 HR 怎么用 AI</h3>
+  <p class="cap">一格是一天，点开就能看。空着的格子，是那天没发。</p>
+  <div class="cal" role="list">
+    {['一', '二', '三', '四', '五', '六', '日'].map((w) => <span class="wd" aria-hidden="true">{w}</span>)}
+    {days.map((d) => (
+      !d.inRange ? <span class="day out" aria-hidden="true"></span>
+      : d.vs.length === 0 ? <span class="day gap" role="listitem" title={`${d.k.slice(5)} 没发`}><i>{dayLabel(d.t)}</i></span>
+      : (
+        <span class={`day has n${d.vs.length}`} role="listitem">
+          {d.vs.map((v) => (
+            <a href={videoHref(v)} title={`${md(v.data.date)} ${v.data.title}`}>
+              {v.data.cover ? <img src={v.data.cover} alt={v.data.title} loading="lazy" /> : <span class="nocover">{v.data.title}</span>}
+            </a>
+          ))}
+          <i>{dayLabel(d.t)}</i>
+        </span>
+      )
+    ))}
+  </div>
+  <p class="cap">最新 {md(videos[videos.length - 1].data.date)}：<a href={videoHref(videos[videos.length - 1])}>{videos[videos.length - 1].data.title}</a></p>
+
+  {episode ? (
+    <ul class="notices">
       <li class="notice">
         <a href={podcastHref}><div class="thumb logo"><img src="/shots/podcast-cover.jpg" alt="播客「在路上 | ON THE ROAD」封面" loading="lazy" /></div></a>
         <div class="body">
@@ -56,6 +94,28 @@ const podcastHref = 'https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb6
           <p>最新：<a href={episode.data.url}>{episode.data.title.split(' ｜ ')[0].replace(/^Vol\.\d+\s*\|\s*/, '')}</a></p>
         </div>
       </li>
-    ) : null}
+    </ul>
+  ) : null}
+
+  <h2>写过的 <a href="/writing/">全部 →</a></h2>
+  <ul class="writes">
+    {writing.map((p) => <li><span class="date">{md(p.data.date)}</span><a href={`/writing/${p.id}/`}>{p.data.title}</a></li>)}
   </ul>
+
+  <h2 id="contact">找我</h2>
+  <div class="contact">
+    <img src="/shots/wechat-qr.jpg" alt="微信二维码" width="112" height="112" loading="lazy" />
+    <p>微信扫码加我，备注一下来意就好。手机上长按二维码识别。<br />邮箱 <a href="mailto:danielzheng19860726@gmail.com">danielzheng19860726@gmail.com</a><br /><span class="muted">完整履历发邮件找我要。</span></p>
+  </div>
 </Base>
+<script>
+  // 讲解片：点一下才加载、静音播放，播起来后再露出系统控件
+  for (const b of document.querySelectorAll<HTMLButtonElement>('.clip')) {
+    b.addEventListener('click', () => {
+      const v = b.querySelector('video')!;
+      b.replaceWith(v);
+      v.controls = true;
+      v.play().catch(() => {});
+    }, { once: true });
+  }
+</script>
