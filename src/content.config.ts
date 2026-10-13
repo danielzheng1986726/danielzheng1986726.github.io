@@ -20,7 +20,7 @@ const writing = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
-    source: z.string().url(),
+    source: z.string().url().optional(),
     platform: z.string().default('知乎'),
     kind: z.enum(['answer', 'article']).default('article'),
     question: z.string().default(''),

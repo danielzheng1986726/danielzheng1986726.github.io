@@ -13,9 +13,11 @@ const ymd = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${S
 <Base title={post.data.title} description={post.data.summary} current="/writing/">
   <div class="work-head">
     <h1>{post.data.title}</h1>
-    <p class="sub">{ymd} · 原发于 <a href={post.data.source}>{post.data.platform}</a>，评论在那边。</p>
+    {post.data.source
+      ? <p class="sub">{ymd} · 原发于 <a href={post.data.source}>{post.data.platform}</a>，评论在那边。</p>
+      : <p class="sub">{ymd} · 首发于本站。</p>}
   </div>
-  {post.data.kind === 'answer' && post.data.question ? (
+  {post.data.kind === 'answer' && post.data.question && post.data.source ? (
     <div class="asked">
       <span>这是一篇知乎回答，题主问的是：</span>
       <a href={post.data.source.replace(/\/answer\/\d+.*$/, '') || post.data.source}>{post.data.question}</a>

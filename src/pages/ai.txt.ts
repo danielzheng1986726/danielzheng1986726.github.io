@@ -27,7 +27,7 @@ export async function GET() {
     lines.push('');
   }
   lines.push('## 写过的');
-  for (const p of writing) lines.push(`- ${ymd(p.data.date)} ${p.data.title} · ${p.data.source}`);
+  for (const p of writing) lines.push(`- ${ymd(p.data.date)} ${p.data.title} · ${p.data.source ?? `https://danielzheng1986726.github.io/writing/${p.id}/`}`);
   lines.push('');
   lines.push('## 讲过的');
   lines.push('### 播客「在路上 | ON THE ROAD」 https://www.xiaoyuzhoufm.com/podcast/66cd42d8f78678cbe75bb69f');
