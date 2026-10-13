@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """从知乎账本同步「上站：是」的文章到网站。
 账本：~/Projects/active/yage/periodic_jobs/zhihu_review/ledger.md
-上不上站：条目里手写「上站：是/否」说了算；没写就看「主题线」，职场和 AI科技 自动上，其余不上。可选：站内标题（没有就用条目标题）。
+上不上站：条目里手写「上站：是/否」说了算；没写就看「主题线」，职场和 AI科技 自动上，其余不上。
+上站必须写「站内标题」（给第一次来的人看的完整标题），没写的不上站，日志里打 NEED。
 正文用知乎 CLI 拉本人全文，转 Markdown，写到 src/content/writing/<date>-<token>.md。
 已存在且正文未变则不动；上站改成否则删除对应文件。"""
 import re, os, sys, json, subprocess, pathlib, time
@@ -24,7 +25,8 @@ except Exception:
 # 只解析「## 条目」以下；标题限定在一行内。09-25 教训：模板里的「### [标题缩写] · YYYY-MM-DD」不是数字日期，
 # 旧正则 (.+?) 在 re.S 下跨行一路吞到第一个真实条目，站内标题变成整段模板。
 s = s.split('\n## 条目\n', 1)[-1]
-entries = re.findall(r'^### ([^\n]+?) · (\d{4}-\d{2}-\d{2})\n(.*?)(?=^### |\Z)', s, re.S | re.M)
+# 10-13：「·」两边的空格可有可无，10-11 起有条目写成「…）· 日期」，旧正则要求两边都有空格，整条被悄悄跳过。
+entries = re.findall(r'^### ([^\n]+?)\s*·\s*(\d{4}-\d{2}-\d{2})\n(.*?)(?=^### |\Z)', s, re.S | re.M)
 keep = set()
 for title, date, body in entries:
     link = re.search(r'链接：(https?://\S+)', body)
@@ -41,11 +43,20 @@ for title, date, body in entries:
     token = re.search(r'(\d{10,})/?$', url)
     if not token:
         print('skip, no token', url); continue
+    fn = OUT / f'{date}-{token.group(1)}.md'
+    # 10-13 教训：条目名是账本速记（模板写的就是「标题缩写」），拿它兜底，站上就出现「先问跟谁比」这种
+    # 没上下文的标题。上站必须手写「站内标题」，没写就不上；已经在站上的保持原样，不删也不改。
     site_title = re.search(r'站内标题：\s*(.+)', body)
-    site_title = site_title.group(1).strip() if site_title else title.strip()
+    if not site_title:
+        print('NEED 站内标题，本篇不上站：', title.strip(), date)
+        if fn.exists():
+            keep.add(fn.name)
+        continue
+    site_title = site_title.group(1).strip()
     summary = re.search(r'主钉：\s*(.+)', body)
     summary = summary.group(1).strip() if summary else ''
-    fn = OUT / f'{date}-{token.group(1)}.md'
+    if not summary or '未填' in summary:
+        print('WARN 主钉没填，转发卡片的描述会是空的：', title.strip(), date)
     keep.add(fn.name)
     time.sleep(4)   # 知乎 CLI 连着调会报 rate limit
     r = subprocess.run([str(CLI), 'me', 'content', '--content-url', url], capture_output=True, text=True)

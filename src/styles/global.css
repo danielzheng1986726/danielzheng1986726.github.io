@@ -70,7 +70,7 @@ footer{margin-top:40px;border-top:var(--rule) solid var(--line);padding-top:14px
 .podcast li{margin:2px 0}
 .writes .cap{margin:0 0 0 auto;white-space:nowrap}
 .writes .t{min-width:0}
-.writes .q{display:block;margin:2px 0 0;overflow:hidden;text-overflow:ellipsis}
+.writes .q{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;margin:2px 0 0;overflow:hidden;white-space:normal;overflow-wrap:anywhere}
 .more{margin:10px 0 0;font-size:var(--fs-s)}
 .more a{text-decoration:none;color:var(--muted)}
 .more a:hover{text-decoration:underline}
