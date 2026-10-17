@@ -37,6 +37,6 @@ export async function GET() {
   for (const v of videos) lines.push(`- ${ymd(v.data.date)} ${v.data.title}${v.data.bvid ? ' · https://www.bilibili.com/video/' + v.data.bvid : ''}`);
   lines.push('');
   lines.push('## 联系');
-  lines.push('邮箱 danielzheng19860726@gmail.com。完整履历可索取。');
+  lines.push('邮箱 danielzheng0726@gmail.com。完整履历可索取。');
   return new Response(lines.join('\n'), { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
 }
