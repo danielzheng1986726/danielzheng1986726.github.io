@@ -10,8 +10,14 @@ $PY scripts/sync_podcast.py
 if [[ -n "$(git status --porcelain src/content public/covers)" ]]; then
   git add src/content public/covers
   git -c user.name="Daniel.Z" -c user.email="danielzheng19860726@gmail.com" commit -q -m "sync: $(date +%F) 内容同步"
-  git push -q origin main
-  echo "pushed $(date)"
 else
   echo "nothing to sync $(date)"
+fi
+# 推送单独判断：本地比线上多出提交就推，不管是不是今天新提交的。
+# 2026-10-24 改：以前只在有新改动时才推，15:00 网络超时那次 commit 成功、push 失败，
+# 第二天工作区干净就不推了，提交一直卡在本地（10-17、10-24 两次都是手动推送时顺带上去的）。
+ahead=$(git rev-list --count origin/main..main)
+if (( ahead > 0 )); then
+  git push -q origin main
+  echo "pushed $ahead commit(s) $(date)"
 fi
