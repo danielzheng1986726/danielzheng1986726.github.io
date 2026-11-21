@@ -1,5 +1,12 @@
 [
   {
+    "id": "6b01248477e5b18a333088d2",
+    "date": "2026-11-21",
+    "title": "Vol.80 | 先做到 100 分，再交 70 分 ｜ 一个高校老师，白天坐班、晚上 build 的一年",
+    "minutes": 100,
+    "url": "https://www.xiaoyuzhoufm.com/episode/6b01248477e5b18a333088d2"
+  },
+  {
     "id": "6ae3625497726cd46759d4d1",
     "date": "2026-10-29",
     "title": "Vol.79 | 装完 Claude Code，就算转型了吗 ｜ 一个陪 HR 走了十五年的人，和他的一千次装机",
@@ -96,12 +103,5 @@
     "title": "Vol.66 | 我知道我可以选择——哪怕此刻我选择不了| 不想上班系列",
     "minutes": 19,
     "url": "https://www.xiaoyuzhoufm.com/episode/694e36a72db086f8970ff0f0"
-  },
-  {
-    "id": "6943a53752d4707aaa36d35e",
-    "date": "2025-12-18",
-    "title": "Vol.65 | 从一级市场“逃离”后的一年，如何获得 30+的收益率？| 投资入门系列 S01EP03",
-    "minutes": 41,
-    "url": "https://www.xiaoyuzhoufm.com/episode/6943a53752d4707aaa36d35e"
   }
 ]
